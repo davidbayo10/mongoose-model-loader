@@ -50,7 +50,7 @@ function checkFile(fileExtension, excludedFiles) {
     const fileName = fileStat.name;
     fs.readFile(path.resolve(root, fileName), () => {
       const shouldRequireModel =
-        validFileExtension(fileName, fileExtension) &&
+        isValidFileExtension(fileName, fileExtension) &&
         notExcludedFile(fileName, excludedFiles);
 
       if (shouldRequireModel) {
