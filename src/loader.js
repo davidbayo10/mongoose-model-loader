@@ -42,7 +42,21 @@ function isValidFileExtension(fileName, fileExtension) {
 }
 
 function notExcludedFile(fileName, excludedFiles) {
+  if (!excludedFiles.length) {
+    return true;
+  }
+
   return excludedFiles.find(excludedFile => excludedFile !== fileName);
+}
+
+function getName(fileName, fileExtension) {
+  const match = fileName.match(new RegExp(fileExtension));
+  if (!match) {
+    return;
+  }
+
+  const index = match.index;
+  return fileName.substr(0, index);
 }
 
 function checkFile(fileExtension, excludedFiles) {
@@ -54,8 +68,8 @@ function checkFile(fileExtension, excludedFiles) {
         notExcludedFile(fileName, excludedFiles);
 
       if (shouldRequireModel) {
-        const modelName = getName(fileName).capitaliseFirstLetter();
-        const model = require(mainPath + '/' + fileName);
+        const modelName = getName(fileName, fileExtension).capitaliseFirstLetter();
+        const model = require(`${root}/${fileName}`);
         const schema = toSchema(model);
         mongoose.model(modelName, schema);
       }
@@ -73,7 +87,6 @@ function load(options) {
       const fileExtension = options.fileExtension || '.js';
       const excludedFiles = options.excludedFiles || [];
       const walker = walk.walk(sourcePath, { followLinks: false });
-
       walker.on('file', checkFile(fileExtension, excludedFiles));
       walker.on('error', () => reject());
       walker.on('end', () => resolve());
