@@ -1,5 +1,5 @@
 const schema = require('./schema');
 const loader = require('./loader');
 
-exports.loader = schema.loader;
+exports.loader = loader.loader;
 exports.toSchema = schema.toSchema;
