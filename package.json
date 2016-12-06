@@ -1,0 +1,26 @@
+{
+  "name": "mongoose-model-loader",
+  "version": "1.0.0",
+  "description": "Mongoose helper for loading models as objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongoose",
+    "models",
+    "nodejs",
+    "express"
+  ],
+  "author": "David Bayo Alcaide",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "mongoose": "^4.6.8",
+    "walk": "^2.3.9"
+  },
+  "peerDependencies": {
+    "bluebird": "3.x",
+    "mongoose": "4.x"
+  }
+}
