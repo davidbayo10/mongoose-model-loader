@@ -33,7 +33,7 @@ function validateOptions(options) {
 }
 
 function isValidFileExtension(fileName, fileExtension) {
-  var validFileExtension = fileName.match(new RegExp(fileExtension));
+  const validFileExtension = fileName.match(new RegExp(fileExtension));
   if (!validFileExtension) {
     return false;
   }
@@ -55,8 +55,7 @@ function getName(fileName, fileExtension) {
     return;
   }
 
-  const index = match.index;
-  return fileName.substr(0, index);
+  return fileName.substr(0, match.index);
 }
 
 function checkFile(fileExtension, excludedFiles) {
