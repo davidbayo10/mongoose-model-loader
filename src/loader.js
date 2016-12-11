@@ -15,9 +15,14 @@ function throwError(message) {
 }
 
 function validateOptions(options) {
+  const db = options.db;
   const sourcePath = options.sourcePath;
   const fileExtension = options.fileExtension;
   const excludedFiles = options.excludedFiles;
+
+  if (!db) {
+    throwError('Url database is required');
+  }
 
   if (!sourcePath) {
     throwError('Source path is required');
@@ -79,13 +84,14 @@ function checkFile(fileExtension, excludedFiles) {
 }
 
 function load(options) {
+  options = options || {};
   return new Promise((resolve, reject) => {
     try {
       validateOptions(options);
-      const sourcePath = options.sourcePath;
+      mongoose.connect(options.db);
       const fileExtension = options.fileExtension || '.js';
       const excludedFiles = options.excludedFiles || [];
-      const walker = walk.walk(sourcePath, { followLinks: false });
+      const walker = walk.walk(options.sourcePath, { followLinks: false });
       walker.on('file', checkFile(fileExtension, excludedFiles));
       walker.on('error', () => reject());
       walker.on('end', () => resolve());

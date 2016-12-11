@@ -22,6 +22,7 @@ const mongooseModelLoader = require('mongoose-model-loader');
 function init(dirname) {
   const sourcePath = dirname + '{ models directory }';
   return mongooseModelLoader.loader({
+    db: 'localhost/name-of-database'
     sourcePath: sourcePath,
     fileExtension: '.model.js',     // .js as default
   });
