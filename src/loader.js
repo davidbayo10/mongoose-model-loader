@@ -83,7 +83,7 @@ function checkFile(fileExtension, excludedFiles) {
   };
 }
 
-function load(options, cb) {
+function loader(options, cb) {
   options = options || {};
   return new Promise((resolve, reject) => {
     try {
@@ -93,19 +93,19 @@ function load(options, cb) {
       const excludedFiles = options.excludedFiles || [];
       const walker = walk.walk(options.sourcePath, { followLinks: false });
       walker.on('file', checkFile(fileExtension, excludedFiles));
-      walker.on('error', () => {
-        cb(e);
+      walker.on('error', err => {
+        cb(err);
         reject();
       });
       walker.on('end', () => {
         cb(null);
         resolve();
       });
-    } catch (e) {
-      cb(e);
-      reject(e);
+    } catch (err) {
+      cb(err);
+      reject(err);
     }
   });
 }
 
-exports.loader = load;
+exports.loader = loader;
