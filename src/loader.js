@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const walk = require('walk');
 const toSchema = require('./schema').toSchema;
 
+// TODO: Walker.js external file
+// TODO: Util.js file
+
 String.prototype.capitaliseFirstLetter = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -108,4 +111,20 @@ function loader(options, cb) {
   });
 }
 
+function loaderSync(options) {
+  options = options || {};
+  validateOptions(options);
+  mongoose.connect(options.db);
+  const fileExtension = options.fileExtension || '.js';
+  const excludedFiles = options.excludedFiles || [];
+  const walkerOptions = {
+    followLinks: false,
+    listeners: {
+      file: checkFile(fileExtension, excludedFiles),
+    },
+  };
+  walk.walkSync(options.sourcePath, walkerOptions);
+}
+
 exports.loader = loader;
+exports.loaderSync = loaderSync;
