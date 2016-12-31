@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const mongoose = require('mongoose');
@@ -70,20 +69,18 @@ function getName(fileName, fileExtension) {
 function checkFile(fileExtension, excludedFiles) {
   return (root, fileStat, next) => {
     const fileName = fileStat.name;
-    fs.readFile(path.resolve(root, fileName), () => {
-      const shouldRequireModel =
-        isValidFileExtension(fileName, fileExtension) &&
-        notExcludedFile(fileName, excludedFiles);
+    const shouldRequireModel =
+      isValidFileExtension(fileName, fileExtension) &&
+      notExcludedFile(fileName, excludedFiles);
 
-      if (shouldRequireModel) {
-        const modelName = getName(fileName, fileExtension).capitaliseFirstLetter();
-        const model = require(`${root}/${fileName}`);
-        const schema = toSchema(model);
-        mongoose.model(modelName, schema);
-      }
+    if (shouldRequireModel) {
+      const modelName = getName(fileName, fileExtension).capitaliseFirstLetter();
+      const model = require(path.join(root, fileName));
+      const schema = toSchema(model);
+      mongoose.model(modelName, schema);
+    }
 
-      next();
-    });
+    next();
   };
 }
 
