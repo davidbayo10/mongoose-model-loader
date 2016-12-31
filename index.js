@@ -1,6 +1,6 @@
 'use strict';
-const bluebird = require('bluebird');
+
 const mongoose = require('mongoose');
-mongoose.Promise = bluebird;
+mongoose.Promise = require('bluebird');
 
 module.exports = require('./src');
